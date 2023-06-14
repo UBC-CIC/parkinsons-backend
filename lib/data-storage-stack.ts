@@ -1,10 +1,7 @@
-import { Aws, Duration, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
-import { AssetCode, Runtime, Function } from 'aws-cdk-lib/aws-lambda';
+import { Aws, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { BlockPublicAccess, Bucket, BucketEncryption, HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { VPCStack } from './vpc-stack';
-import { RetentionDays } from 'aws-cdk-lib/aws-logs';
-import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+
 
 
 export class DataStorageStack extends Stack {

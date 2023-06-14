@@ -49,7 +49,7 @@ export class LambdaStack extends Stack {
                           's3:PutObject',
                       ],
                       resources: [
-                        dataStorage.storageBucket.bucketArn
+                        `${dataStorage.storageBucket.bucketArn}/*`
                       ]
                   }),
                 ]
@@ -71,8 +71,8 @@ export class LambdaStack extends Stack {
         vpcStack.lambdaSecurityGroup
       ],
       environment: {
-        APIKEY_SECRET_NAME: `APIKey`,
-        UPLOAD_BUCKET: `parkinsons-storage-bucket-867075516558`
+        APIKEY_SECRET_NAME: `testing/APIKey`,
+        UPLOAD_BUCKET: `parkinsons-storage-bucket-867075516558` // TODO
       }
     });    
     

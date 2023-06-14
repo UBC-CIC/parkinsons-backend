@@ -13,19 +13,16 @@ exports.handler = async (event: any) => {
           SecretId: process.env.APIKEY_SECRET_NAME,
       }) 
   )
-
-
+  
   const secretValues = JSON.parse(secret.SecretString ?? '{}')
-  const api_key = secretValues.url_key;
+  const storedAPIKey = secretValues.api_key;
+
+  console.log(event.body);
   const eventBody = JSON.parse(event.body);
-  const APIKey = eventBody.APIKey;
+  console.log('EVENTBODY: ' + eventBody);
+  const inputAPIKey = eventBody.APIKey;
 
-  console.log('secretValues: ')
-  console.log(secretValues)
-  console.log(api_key);
-  console.log(APIKey);
-
-  if(api_key == APIKey) {
+  if(storedAPIKey == inputAPIKey) {
     const uploadURL = await getUploadURL(event);
 
     return {
@@ -62,7 +59,7 @@ const getUploadURL = async function(event: any) {
   const putObjectParams = {
     Bucket: process.env.UPLOAD_BUCKET,
     Key: s3Key,
-    // ContentType: contentType,
+    ContentType: 'application/json',
   };
   const command = new PutObjectCommand(putObjectParams);
 
