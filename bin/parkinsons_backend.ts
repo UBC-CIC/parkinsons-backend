@@ -7,5 +7,5 @@ import { VPCStack } from '../lib/vpc-stack';
 
 const app = new cdk.App();
 const vpcStack = new VPCStack(app, 'VPCStack');
-const dataStorageStack = new DataStorageStack(app, 'DataStorageStack');
+const dataStorageStack = new DataStorageStack(app, 'DataStorageStack', vpcStack);
 new LambdaStack(app, 'LambdaStack', vpcStack, dataStorageStack);
