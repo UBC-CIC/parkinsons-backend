@@ -21,6 +21,6 @@
     "@aws-sdk/s3-request-presigner": "3.245.0",
     "@aws-sdk/client-secrets-manager": "3.245.0",
     "@aws-cdk/aws-lambda-event-sources": "^1.204.0",
-    "@json2csv/plainjs": "^7.0.1"
+    "csv": "^6.3.1"
   }
 }

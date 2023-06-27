@@ -1,7 +1,6 @@
 import { S3Client, HeadObjectCommand, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
-import { Parser } from '@json2csv/plainjs';
-
+import { stringify } from 'csv-stringify/sync';
 
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 
@@ -35,26 +34,121 @@ exports.handler = async (event: any) => {
 
     const jsonObj = JSON.parse(bodyContents);
 
-    // try {
-    //   const parser = new Parser();
-    //   const csv = parser.parse(jsonObj["surveys"]);
-    //   console.log('CSV CSV CSV CSV CSV CSV CSV');
-    //   console.log(csv);
-    // } catch (err) {
-    //   console.error(err);
-    // }
+
+    // SURVEYS CSV UPLOAD
+    
+    let surveyColumns: string[] = [];
+    console.log('jsonObj["surveys"] jsonObj["surveys"] jsonObj["surveys"]');
+    console.log(jsonObj["surveys"]);
+    if(jsonObj["surveys"]) {
+      const surveyID = Object.keys(jsonObj["surveys"])[0];
+      console.log('survey ID survey ID' + surveyID);
+      surveyColumns = Object.keys(jsonObj["surveys"][surveyID]);
+    }
+
+    let surveyArray = [];
+    surveyArray.push(surveyColumns);
+  
+    if(jsonObj["surveys"]) {
+      for (let surveyId of Object.keys(jsonObj["surveys"])) {
+        let row: any[] = [];
+        for (let column of surveyColumns) {
+          if (typeof jsonObj["surveys"][surveyId][column] === 'boolean') {
+            row.push(jsonObj["surveys"][surveyId][column].toString());
+          } else  {
+            row.push(jsonObj["surveys"][surveyId][column]);
+          }
+        }
+        
+        surveyArray.push(row);
+      }
+    }
+
+    let surveyCSVUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/csv_data/'+jsonObj["study_summary"]["study_id"]+'-surveys.csv';
+
+    
+
+    let surveyCSVBuffer = Buffer.from(stringify(surveyArray));
+
+    let putSurveyParams = {
+      "Bucket": process.env.UPLOAD_BUCKET,
+      "Key": surveyCSVUploadKey,
+      "Body": surveyCSVBuffer,
+      "ContentType": 'text/csv',
+    }
+    let surveyCSVCommand = new PutObjectCommand(putSurveyParams);
+
+    try {
+      let response = await s3.send(surveyCSVCommand);
+    } catch (error) {
+      console.log(error);
+    }
+
+
+
+
+
+    // MEDICATIONS CSV UPLOAD
+
+    let medicationsColumns: string[] = ["study_id","trial_id","patient_id","device_id","medication_time"];
+  
+    let medicationsArray = [];
+    medicationsArray.push(medicationsColumns);
+  
+    if(jsonObj["study_summary"]["medication_times"]) {
+      for (let medication_time of jsonObj["study_summary"]["medication_times"]) {
+        let row: any[] = [];
+        row.push(jsonObj["study_summary"]["study_id"]);
+        row.push(jsonObj["study_summary"]["trial_id"]);
+        row.push(jsonObj["study_summary"]["patient_id"]);
+        row.push(jsonObj["study_summary"]["device_id"]);
+        row.push(medication_time);        
+        medicationsArray.push(row);
+      }
+    }
+
+    let medicationsCSVUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/csv_data/'+jsonObj["study_summary"]["study_id"]+'-medications.csv';
+
+    let medacitonsCSVBuffer = Buffer.from(stringify(medicationsArray));
+
+    let putMedicationsParam = {
+      "Bucket": process.env.UPLOAD_BUCKET,
+      "Key": medicationsCSVUploadKey,
+      "Body": medacitonsCSVBuffer,
+      "ContentType": 'text/csv',
+    }
+    let mediactionsCSVCommand = new PutObjectCommand(putMedicationsParam);
+
+    try {
+      let response = await s3.send(mediactionsCSVCommand);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+
+
+
+    
+
+    
+
+  
+
+
+
+    // SURVEY JSON UPLAOD
     
     for (let surveyId of Object.keys(jsonObj["surveys"])) {
       let survey = jsonObj["surveys"][surveyId];
 
-      let uploadKey = 'trials/trial_id=' + survey["trial_id"] + '/patient_id=' + survey["patient_id"] + '/surveys/' + surveyId + '.json';
+      let surveyJSONUploadKey = 'trials/trial_id=' + survey["trial_id"] + '/patient_id=' + survey["patient_id"] + '/json_data/surveys/' + surveyId + '.json';
 
-      let objBuffer = Buffer.from(JSON.stringify(survey));
+      let surveyJSONBuffer = Buffer.from(JSON.stringify(survey));
 
       let putSurveyParams = {
         "Bucket": process.env.UPLOAD_BUCKET,
-        "Key": uploadKey,
-        "Body": objBuffer,
+        "Key": surveyJSONUploadKey,
+        "Body": surveyJSONBuffer,
         "ContentType": 'application/json',
       }
       let command = new PutObjectCommand(putSurveyParams);
@@ -66,20 +160,22 @@ exports.handler = async (event: any) => {
       }
     }
 
-    const objBuffer = Buffer.from(JSON.stringify(jsonObj["study_summary"]));
+    // SUMMARY JSON UPLOAD
 
-    const uploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/summaries/' + jsonObj["study_summary"]["study_id"]  + '.json';
+    const summaryJSONBuffer = Buffer.from(JSON.stringify(jsonObj["study_summary"]));
+
+    const summaryJSONUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/json_data/summaries/' + jsonObj["study_summary"]["study_id"]  + '.json';
 
     const putSummaryParams = {
       "Bucket": process.env.UPLOAD_BUCKET,
-      "Key": uploadKey,
-      "Body": objBuffer,
+      "Key": summaryJSONUploadKey,
+      "Body": summaryJSONBuffer,
       "ContentType": 'application/json',
     }
-    const command = new PutObjectCommand(putSummaryParams);
+    const summaryJSONCommand = new PutObjectCommand(putSummaryParams);
 
     try {
-      const response = await s3.send(command);
+      const response = await s3.send(summaryJSONCommand);
     } catch (error) {
       console.log(error);
     }
