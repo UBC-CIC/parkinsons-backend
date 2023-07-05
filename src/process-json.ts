@@ -4,8 +4,6 @@ import { stringify } from 'csv-stringify/sync';
 
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 
-// Apparently the stream parameter should be of type Readable|ReadableStream|Blob
-// The latter 2 don't seem to exist anywhere.
 async function streamToString(stream: Readable): Promise<string> {
   return await new Promise((resolve, reject) => {
     const chunks: Uint8Array[] = [];
@@ -64,7 +62,7 @@ exports.handler = async (event: any) => {
       }
     }
 
-    let surveyCSVUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/csv_data/'+jsonObj["study_summary"]["study_id"]+'-surveys.csv';
+    let surveyCSVUploadKey = 'trials/trial_id='+jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/csv_data/study_id=' + jsonObj["study_summary"]["study_id"]+'/surveys.csv';
 
     
 
@@ -107,7 +105,7 @@ exports.handler = async (event: any) => {
       }
     }
 
-    let medicationsCSVUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/csv_data/'+jsonObj["study_summary"]["study_id"]+'-medications.csv';
+    let medicationsCSVUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/csv_data/study_id=' + jsonObj["study_summary"]["study_id"]+'/medications.csv';
 
     let medacitonsCSVBuffer = Buffer.from(stringify(medicationsArray));
 
