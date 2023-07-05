@@ -3,9 +3,10 @@
 | Index                                                                    | Description                                 |
 | :----------------------------------------------------------------------- | :------------------------------------------ |
 | [Dependencies](#dependencies)                                            | Prerequisite dependencies    |
-| [Cloning Repository](#step-1-cloning-the-repository)                     | Cloning the project from GitHub to your local machine       |
-| [Install Dependencies](#step-2-install-dependencies)                     | Installing required core npm dependencies      |
-| [CDK Deployment](#step-3-cdk-deployment-part-1)                   | Deploying the project |
+| [Cloning Repository](#cloning-the-repository)                     | Cloning the project from GitHub to your local machine       |
+| [Install Dependencies](#install-dependencies)                     | Installing required core npm dependencies      |
+| [CDK Deployment](#cdk-deployment-part-1)                   | Deploying the project |
+| [Store API Key](#store-api-key)                   | Create a new API Key for API authentication |
 
 ## Dependencies
 Before you start deploying, you must have the following dependencies:
@@ -28,7 +29,7 @@ If you already have a configured AWS account, you may use your own configured ac
 ```
 
 
-## Step 1: Install Dependencies
+## Install Dependencies
 Ensure you are in the backend directory, then install the core dependencies:
 ```
 npm install
@@ -40,7 +41,7 @@ rm package-lock.json
 npm install
 ```
 
-The run the respective npm build command for your operating system:
+Then run the respective npm build command for your operating system:
 
 For Mac OS
 ```
@@ -52,7 +53,7 @@ For Windows OS
 npm run build-windows
 ```
 
-## Step 2: CDK Deployment
+## CDK Deployment
 Initialize the CDK stacks (required only if you have not deployed this stack before). 
 ```
 cdk synth --profile parkinsons-project
@@ -65,4 +66,22 @@ Deploy the CDK stacks (this will take 30-40 minutes):
 cdk deploy --all --profile parkinsons-project
 ```
 
+## Store API Key 
 
+To give the mobile app access to S3, we will create and store an API key that will be passed in as part of the API calls from the app.
+
+In the AWS Console, head to the **AWS Secrets Manager** console and select **Store a new secret**.
+
+Select **Other type of secret** for Secret Type and **aws/secretsmanager** for encryption key. 
+
+In the **Key/value pairs** section, enter the following key value pair:
+
+Key: `api_key`\
+Value: ........... .........................................................
+
+
+[TODO]
+
+On the next page, enter **APIKey** as the **Secret name** and an optional description.
+
+Leave the remaning settings as default and store the API key. 

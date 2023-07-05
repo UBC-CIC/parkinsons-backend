@@ -45,12 +45,6 @@ exports.handler = async (event: any) => {
 
 const getUploadURL = async function(event: any) {
 
-  // const apiRequestId = event.requestContext.requestId;
-  // const contentType = event.queryStringParameters.contentType;
-  // const extension = getExtension(contentType);
-  // const s3Key = `${apiRequestId}.${extension}`;
-
-
   const eventBody = JSON.parse(event.body)
   const s3Key = eventBody.S3Key;
 
