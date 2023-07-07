@@ -30,7 +30,7 @@ If you already have a configured AWS account, you may use your own configured ac
 
 
 ## Install Dependencies
-Ensure you are in the backend directory, then install the core dependencies:
+Ensure you are in the root directory of the project, then install the core dependencies:
 ```
 npm install
 ```
@@ -74,13 +74,13 @@ In the AWS Console, head to the **AWS Secrets Manager** console and select **Sto
 
 Select **Other type of secret** for Secret Type and **aws/secretsmanager** for encryption key. 
 
+Before proceeding with the next section, you will first need to generate a secure API key such as a 128 bit UUID.\
+**Take note of this API key as you will need to enter this key when deploying the mobile app.**
+
 In the **Key/value pairs** section, enter the following key value pair:
 
 Key: `api_key`\
-Value: ........... .........................................................
-
-
-[TODO]
+Value: [YOUR_API_KEY]
 
 On the next page, enter **APIKey** as the **Secret name** and an optional description.
 

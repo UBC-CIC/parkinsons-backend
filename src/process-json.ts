@@ -62,7 +62,7 @@ exports.handler = async (event: any) => {
       }
     }
 
-    let surveyCSVUploadKey = 'trials/trial_id='+jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/csv_data/study_id=' + jsonObj["study_summary"]["study_id"]+'/surveys.csv';
+    let surveyCSVUploadKey = 'trials/trial_id='+jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/file_type=csv_data/study_id=' + jsonObj["study_summary"]["study_id"]+'/content_type=surveys/surveys.csv';
 
     
 
@@ -105,7 +105,7 @@ exports.handler = async (event: any) => {
       }
     }
 
-    let medicationsCSVUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/csv_data/study_id=' + jsonObj["study_summary"]["study_id"]+'/medications.csv';
+    let medicationsCSVUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/file_type=csv_data/study_id=' + jsonObj["study_summary"]["study_id"]+'/content_type=medications/medications.csv';
 
     let medacitonsCSVBuffer = Buffer.from(stringify(medicationsArray));
 
@@ -139,7 +139,7 @@ exports.handler = async (event: any) => {
     for (let surveyId of Object.keys(jsonObj["surveys"])) {
       let survey = jsonObj["surveys"][surveyId];
 
-      let surveyJSONUploadKey = 'trials/trial_id=' + survey["trial_id"] + '/patient_id=' + survey["patient_id"] + '/json_data/surveys/' + surveyId + '.json';
+      let surveyJSONUploadKey = 'trials/trial_id=' + survey["trial_id"] + '/patient_id=' + survey["patient_id"] + '/file_type=json_data/content_type=surveys/' + surveyId + '.json';
 
       let surveyJSONBuffer = Buffer.from(JSON.stringify(survey));
 
@@ -162,7 +162,7 @@ exports.handler = async (event: any) => {
 
     const summaryJSONBuffer = Buffer.from(JSON.stringify(jsonObj["study_summary"]));
 
-    const summaryJSONUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/json_data/summaries/' + jsonObj["study_summary"]["study_id"]  + '.json';
+    const summaryJSONUploadKey = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/file_type=json_data/content_type=summaries/' + jsonObj["study_summary"]["study_id"]  + '.json';
 
     const putSummaryParams = {
       "Bucket": process.env.UPLOAD_BUCKET,
