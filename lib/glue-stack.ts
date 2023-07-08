@@ -1,5 +1,5 @@
 import { Database, Table, Schema, InputFormat, DataFormat } from '@aws-cdk/aws-glue-alpha';
-import { Duration, Stack, StackProps } from 'aws-cdk-lib';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
@@ -128,6 +128,12 @@ constructor(scope: Construct, id: string, processedDataBucket: Bucket, props?: S
         dataFormat: DataFormat.CSV,
         bucket: processedDataBucket,
         s3Prefix: 'trials',
+        partitionIndexes: [{
+            indexName: 'survey-index',
+            keyNames: [
+                "trial_id", "patient_id", "file_type", "study_id", "content_type"
+            ],
+        }],
     });
 
     this.medicationGlueTable = new Table(this, 'MedicationGlueTable', {
@@ -159,9 +165,13 @@ constructor(scope: Construct, id: string, processedDataBucket: Bucket, props?: S
         dataFormat: DataFormat.CSV,
         bucket: processedDataBucket,
         s3Prefix: 'trials',
+        partitionIndexes: [{
+            indexName: 'medication-index',
+            keyNames: [
+                "trial_id", "patient_id", "file_type", "study_id", "content_type"
+            ],
+        }],
     });
-
-      
 
   }
 }
