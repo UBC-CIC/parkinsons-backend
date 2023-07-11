@@ -7,7 +7,6 @@ import { Construct } from 'constructs';
 import { DataStorageStack } from './data-storage-stack';
 import { VPCStack } from './vpc-stack';
 
-
 export class LambdaStack extends Stack {
   public readonly presignedURLFunction: Function;
   public readonly presignedURLLambdaRole: Role;
