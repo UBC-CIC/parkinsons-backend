@@ -17,9 +17,7 @@ exports.handler = async (event: any) => {
   const secretValues = JSON.parse(secret.SecretString ?? '{}')
   const storedAPIKey = secretValues.api_key;
 
-  console.log(event.body);
   const eventBody = JSON.parse(event.body);
-  console.log('EVENTBODY: ' + eventBody);
   const inputAPIKey = eventBody.APIKey;
 
   if(storedAPIKey == inputAPIKey) {
