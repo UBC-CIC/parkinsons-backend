@@ -52,6 +52,14 @@ export class VPCStack extends Stack {
         }
       });
 
+      this.vpc.addInterfaceEndpoint("Glue-Endpoint", {
+        service: ec2.InterfaceVpcEndpointAwsService.GLUE,
+        securityGroups: [this.lambdaSecurityGroup],
+        subnets: {
+          subnetType: ec2.SubnetType.PRIVATE_ISOLATED
+        }
+      });
+
       
 
   }

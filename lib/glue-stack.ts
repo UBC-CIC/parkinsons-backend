@@ -21,31 +21,15 @@ constructor(scope: Construct, id: string, processedDataBucket: Bucket, props?: S
         tableName: 'survey_table',
         columns: [
             {
-                name: "survey_id",
+                name: "SurveyID",
                 type: Schema.STRING,
             },
             {
-                name: "study_id",
+                name: "Time",
                 type: Schema.STRING,
             },
             {
-                name: "time",
-                type: Schema.STRING,
-            },
-            {
-                name: "is_symptoms_from_earlier_time",
-                type: Schema.STRING,
-            },
-            {
-                name: "patient_id",
-                type: Schema.STRING,
-            },
-            {
-                name: "device_id",
-                type: Schema.STRING,
-            },
-            {
-                name: "trial_id",
+                name: "IsSymptomsFromEarlierTime",
                 type: Schema.STRING,
             },
             {
@@ -123,11 +107,49 @@ constructor(scope: Construct, id: string, processedDataBucket: Bucket, props?: S
                 name: "aching",
                 type: Schema.STRING,
             },
+            {
+                name: "PatientID",
+                type: Schema.STRING,
+            },
+            {
+                name: "DeviceID",
+                type: Schema.STRING,
+            },
+            {
+                name: "TrialID",
+                type: Schema.STRING,
+            },
+            {
+                name: "StudyID",
+                type: Schema.STRING,
+            },
         ],
         database: this.glueDatabase,
         dataFormat: DataFormat.CSV,
         bucket: processedDataBucket,
         s3Prefix: 'trials',
+        partitionKeys: [
+            {
+                name: "trial_id",
+                type: Schema.STRING
+            },
+            {
+                name: "patient_id",
+                type: Schema.STRING
+            },
+            {
+                name: "file_type",
+                type: Schema.STRING
+            },
+            {
+                name: "study_id",
+                type: Schema.STRING
+            },
+            {
+                name: "content_type",
+                type: Schema.STRING
+            },
+        ],
         partitionIndexes: [{
             indexName: 'survey-index',
             keyNames: [
@@ -140,31 +162,52 @@ constructor(scope: Construct, id: string, processedDataBucket: Bucket, props?: S
         tableName: 'medication_table',
         columns: [
             {
-                name: "study_id",
+                name: "StudyID",
                 type: Schema.STRING,
             },
             {
-                name: "medication_time",
+                name: "TrialID",
                 type: Schema.STRING,
             },
             {
-                name: "patient_id",
+                name: "PatientID",
                 type: Schema.STRING,
             },
             {
-                name: "device_id",
+                name: "DeviceID",
                 type: Schema.STRING,
             },
             {
-                name: "trial_id",
+                name: "MedicationTime",
                 type: Schema.STRING,
             },
-            
         ],
         database: this.glueDatabase,
         dataFormat: DataFormat.CSV,
         bucket: processedDataBucket,
         s3Prefix: 'trials',
+        partitionKeys: [
+            {
+                name: "trial_id",
+                type: Schema.STRING
+            },
+            {
+                name: "patient_id",
+                type: Schema.STRING
+            },
+            {
+                name: "file_type",
+                type: Schema.STRING
+            },
+            {
+                name: "study_id",
+                type: Schema.STRING
+            },
+            {
+                name: "content_type",
+                type: Schema.STRING
+            },
+        ],
         partitionIndexes: [{
             indexName: 'medication-index',
             keyNames: [

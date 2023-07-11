@@ -118,6 +118,9 @@ export class DataStorageStack extends Stack {
                 'ec2:CreateNetworkInterface',
                 'ec2:Describe*',
                 'ec2:DeleteNetworkInterface',
+                // Glue
+                'glue:CreatePartition',
+                'glue:GetTable'
               ],
               resources: ['*']
             }),
@@ -150,7 +153,7 @@ export class DataStorageStack extends Stack {
       handler: 'process-json.handler',
       runtime: Runtime.NODEJS_18_X,
       role: this.processingLambdaRole,
-      memorySize: 4096,
+      memorySize: 3008,
       timeout: Duration.seconds(300),
       logRetention: RetentionDays.THREE_MONTHS,
       vpc: vpcStack.vpc,

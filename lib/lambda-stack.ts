@@ -63,7 +63,7 @@ export class LambdaStack extends Stack {
       handler: 'get-presigned-url.handler',
       runtime: Runtime.NODEJS_18_X,
       role: this.presignedURLLambdaRole,
-      memorySize: 4096,
+      memorySize: 3008,
       timeout: Duration.seconds(300),
       logRetention: RetentionDays.THREE_MONTHS,
       vpc: vpcStack.vpc,
