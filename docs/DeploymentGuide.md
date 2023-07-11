@@ -60,7 +60,7 @@ cdk synth --profile parkinsons-project
 cdk bootstrap aws://YOUR_AWS_ACCOUNT_ID/ca-central-1 --profile parkinsons-project
 ```
 
-Deploy the CDK stacks (this will take 30-40 minutes):
+Deploy the CDK stacks:
 
 ```
 cdk deploy --all --profile parkinsons-project
