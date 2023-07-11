@@ -5,7 +5,6 @@ Cloud storage solution to store study results collected in the [Parkinson's Surv
 | :-------------------------------------------------- | :------------------------------------------------------ |
 | [High Level Architecture](#High-Level-Architecture) | High level overview illustrating component interactions |
 | [Deployment](#Deployment-Guide)                     | How to deploy the project                               |
-| [User Guide](#User-Guide)                           | The working solution                                    |
 | [Changelog](#Changelog)                             | Any changes post publish                                |
 | [Credits](#Credits)                                 | Meet the team behind the solution                       |
 | [License](#License)                                 | License details                                         |
@@ -19,11 +18,6 @@ The following architecture diagram illustrates the various AWS components utliiz
 # Deployment Guide
 
 To deploy this solution, please follow our [Deployment Guide](docs/DeploymentGuide.md)
-
-# User Guide
-
-.
-
 
 
 # Changelog

@@ -21,7 +21,7 @@ export class VPCStack extends Stack {
     this.vpc = new ec2.Vpc(this, vpcName, {
         vpcName: vpcName,
         ipAddresses: ec2.IpAddresses.cidr(this.cidrStr),
-        maxAzs: 2,
+        maxAzs: 1,
         natGateways: 0,
         subnetConfiguration: [
           {
