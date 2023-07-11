@@ -75,7 +75,7 @@ In the AWS Console, head to the **AWS Secrets Manager** console and select **Sto
 Select **Other type of secret** for Secret Type and **aws/secretsmanager** for encryption key. 
 
 Before proceeding with the next section, you will first need to generate a secure API key such as a 128 bit UUID.\
-**Take note of this API key as you will need to enter this key when deploying the mobile app.**
+**Take note of this API key as you will need to enter this key when deploying the mobile app. If needed, this API key can be viewed in the AWS Secrets Manager console.**
 
 In the **Key/value pairs** section, enter the following key value pair:
 
