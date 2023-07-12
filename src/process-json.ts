@@ -16,26 +16,15 @@ async function streamToString(stream: Readable): Promise<string> {
 }
 
 exports.handler = async (event: any) => {
-  console.log('EVENTEVENTEVENT');
-  console.log(JSON.stringify(event));
-  console.log('S3 BODY S3 BODY S3 BODY s3 BODY S3 BODY S3 BODY');
-  console.log(event['Records'][0]['s3']);
   const bucket = event.Records[0].s3.bucket.name;
   const key = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
-  console.log('KEY KEY KEY');
-  console.log(key);
-  console.log('BUCKET BUCKET BUCKET');
-  console.log(bucket);
   const getObjParams = {
     Bucket: bucket,
     Key: key,
   };
-  console.log('111111');
 
   const { Body } = await s3.send(new GetObjectCommand(getObjParams));
-  console.log('2222222');
   const bodyContents = await streamToString(Body as Readable);
-  console.log(bodyContents);
 
   const jsonObj = JSON.parse(bodyContents);
 
@@ -43,11 +32,9 @@ exports.handler = async (event: any) => {
   // SURVEYS CSV UPLOAD
 
   let surveyColumns: string[] = [];
-  console.log('jsonObj["surveys"] jsonObj["surveys"] jsonObj["surveys"]');
-  console.log(jsonObj["surveys"]);
+  
   if (jsonObj["surveys"]) {
     const surveyID = Object.keys(jsonObj["surveys"])[0];
-    console.log('survey ID survey ID' + surveyID);
     surveyColumns = Object.keys(jsonObj["surveys"][surveyID]);
   }
 
@@ -84,59 +71,9 @@ exports.handler = async (event: any) => {
   let surveyCSVCommand = new PutObjectCommand(putSurveyParams);
 
   try {
-    console.log('33333333');
-
     let response = await s3.send(surveyCSVCommand);
-    console.log('44444444');
-
   } catch (error) {
-    console.log(error);
   }
-
-
-
-  // CREATE GLUE PARTITION FOR SURVEYS CSV
-
-  let surveyCSVLocation = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/file_type=csv_data/study_id=' + jsonObj["study_summary"]["study_id"] + '/content_type=surveys';
-
-  try {
-    const getSurveyTableInput = {
-      DatabaseName: "parkinsons_database",
-      Name: "survey_table",
-    }
-    const getSurveyTableCommand = new GetTableCommand(getSurveyTableInput);
-
-    console.log('BUCKET NAME BUCKET NAME');
-    console.log(process.env.UPLOAD_BUCKET);
-
-    const getTableResponseSurvey = await glue.send(getSurveyTableCommand);
-    const storageDescriptorSurvey = getTableResponseSurvey['Table']!['StorageDescriptor']!;
-    storageDescriptorSurvey['Location'] = `s3://` + process.env.UPLOAD_BUCKET + `/${surveyCSVLocation}`;
-
-    const surveyInput = { // CreatePartitionRequest
-      DatabaseName: "parkinsons_database",
-      TableName: "survey_table",
-      PartitionInput: { // PartitionInput
-        Values: [
-          jsonObj["study_summary"]["trial_id"],
-          jsonObj["study_summary"]["patient_id"],
-          "csv_data",
-          jsonObj["study_summary"]["study_id"],
-          "surveys",
-        ],
-        StorageDescriptor: storageDescriptorSurvey,
-
-      }
-    }
-    const createSurveyPartitionCommand = new CreatePartitionCommand(surveyInput);
-    const data = await glue.send(createSurveyPartitionCommand);
-  } catch (error) {
-    console.log('GLUE ERROR GLUE ERROR');
-    console.log(error);
-  } finally {
-  }
-
-
 
 
 
@@ -172,61 +109,10 @@ exports.handler = async (event: any) => {
   let mediactionsCSVCommand = new PutObjectCommand(putMedicationsParam);
 
   try {
-    console.log('55555555');
-
     let response = await s3.send(mediactionsCSVCommand);
-    console.log('6666666');
-
-    console.log(response);
   } catch (error) {
-    console.log(error);
+
   }
-
-
-
-
-  // CREATE GLUE PARTITION FOR MEDICATIONS CSV
-
-  let medicationCSVLocation = 'trials/trial_id=' + jsonObj["study_summary"]["trial_id"] + '/patient_id=' + jsonObj["study_summary"]["patient_id"] + '/file_type=csv_data/study_id=' + jsonObj["study_summary"]["study_id"] + '/content_type=medications';
-
-  try {
-    const getMedicationTableInput = {
-      DatabaseName: "parkinsons_database",
-      Name: "medication_table",
-    }
-    const getMedicationTableCommand = new GetTableCommand(getMedicationTableInput);
-
-    console.log('BUCKET NAME BUCKET NAME');
-    console.log(process.env.UPLOAD_BUCKET);
-
-    const getTableResponseMedication = await glue.send(getMedicationTableCommand);
-    const storageDescriptorMedication = getTableResponseMedication['Table']!['StorageDescriptor']!;
-    storageDescriptorMedication['Location'] = `s3://` + process.env.UPLOAD_BUCKET + `/${medicationCSVLocation}`;
-
-    const medicationInput = { // CreatePartitionRequest
-      DatabaseName: "parkinsons_database",
-      TableName: "medication_table",
-      PartitionInput: { // PartitionInput
-        Values: [
-          jsonObj["study_summary"]["trial_id"],
-          jsonObj["study_summary"]["patient_id"],
-          "csv_data",
-          jsonObj["study_summary"]["study_id"],
-          "medications",
-        ],
-        StorageDescriptor: storageDescriptorMedication,
-
-      }
-    }
-    const createMedicationPartitionCommand = new CreatePartitionCommand(medicationInput);
-    const data = await glue.send(createMedicationPartitionCommand);
-  } catch (error) {
-    console.log(error);
-  } finally {
-  }
-
-
-
 
 
 
@@ -250,7 +136,6 @@ exports.handler = async (event: any) => {
     try {
       let response = await s3.send(command);
     } catch (error) {
-      console.log(error);
     }
   }
 
@@ -271,7 +156,6 @@ exports.handler = async (event: any) => {
   try {
     const response = await s3.send(summaryJSONCommand);
   } catch (error) {
-    console.log(error);
   }
 
   return bodyContents;
