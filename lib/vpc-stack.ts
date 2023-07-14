@@ -1,4 +1,4 @@
-import { Duration, Stack, StackProps } from 'aws-cdk-lib';
+import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2'
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
@@ -37,6 +37,7 @@ export class VPCStack extends Stack {
             }]
           }
         },
+        restrictDefaultSecurityGroup: true,
       });
       
       this.lambdaSecurityGroup = new SecurityGroup(this, 'ParkinsonsLambdaSG', {
@@ -59,8 +60,5 @@ export class VPCStack extends Stack {
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED
         }
       });
-
-      
-
   }
 }

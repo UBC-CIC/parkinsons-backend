@@ -1,10 +1,8 @@
 import { S3Client, HeadObjectCommand, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 import { stringify } from 'csv-stringify/sync';
-import { CreatePartitionCommand, GetTableCommand, Glue, GlueClient } from '@aws-sdk/client-glue';
 
 const s3 = new S3Client({ region: process.env.AWS_REGION });
-const glue = new GlueClient({ region: process.env.AWS_REGION });
 
 async function streamToString(stream: Readable): Promise<string> {
   return await new Promise((resolve, reject) => {
