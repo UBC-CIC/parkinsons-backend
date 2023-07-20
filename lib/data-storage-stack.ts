@@ -111,19 +111,13 @@ export class DataStorageStack extends Stack {
             new PolicyStatement({
               effect: Effect.ALLOW,
               actions: [
+                // KMS
                 'kms:Decrypt',
                 'kms:Encrypt',
                 'kms:GenerateDataKey',
                 // CloudWatch
                 'cloudwatch:*',
                 'logs:*',
-                // VPC
-                // 'ec2:CreateNetworkInterface',
-                // 'ec2:Describe*',
-                // 'ec2:DeleteNetworkInterface',
-                // Glue
-                // 'glue:CreatePartition',
-                // 'glue:GetTable'
               ],
               resources: ['*']
             }),

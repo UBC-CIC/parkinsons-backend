@@ -52,6 +52,5 @@ export class VPCStack extends Stack {
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED
         }
       });
-
   }
 }
