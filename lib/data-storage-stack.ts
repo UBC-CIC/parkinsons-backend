@@ -60,6 +60,7 @@ export class DataStorageStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
       encryption: BucketEncryption.S3_MANAGED,
+      enforceSSL: true,
     });
 
     this.rawDataBucket = new Bucket(this, 'uploadBucket', {
@@ -71,6 +72,7 @@ export class DataStorageStack extends Stack {
       encryption: BucketEncryption.KMS,
       encryptionKey: this.encryptionKey,
       versioned: true,
+      enforceSSL: true,
       cors: [
         {
           allowedMethods: [HttpMethods.HEAD, HttpMethods.GET, HttpMethods.PUT],
@@ -89,6 +91,7 @@ export class DataStorageStack extends Stack {
       encryption: BucketEncryption.KMS,
       encryptionKey: this.encryptionKey,
       versioned: true,
+      enforceSSL: true,
       cors: [
         {
           allowedMethods: [HttpMethods.HEAD, HttpMethods.GET, HttpMethods.PUT],
@@ -115,12 +118,12 @@ export class DataStorageStack extends Stack {
                 'cloudwatch:*',
                 'logs:*',
                 // VPC
-                'ec2:CreateNetworkInterface',
-                'ec2:Describe*',
-                'ec2:DeleteNetworkInterface',
+                // 'ec2:CreateNetworkInterface',
+                // 'ec2:Describe*',
+                // 'ec2:DeleteNetworkInterface',
                 // Glue
-                'glue:CreatePartition',
-                'glue:GetTable'
+                // 'glue:CreatePartition',
+                // 'glue:GetTable'
               ],
               resources: ['*']
             }),
