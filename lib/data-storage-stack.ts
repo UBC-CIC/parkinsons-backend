@@ -118,6 +118,10 @@ export class DataStorageStack extends Stack {
                 // CloudWatch
                 'cloudwatch:*',
                 'logs:*',
+                // VPC
+                'ec2:CreateNetworkInterface',
+                'ec2:Describe*',
+                'ec2:DeleteNetworkInterface',
               ],
               resources: ['*']
             }),
