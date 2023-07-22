@@ -6,6 +6,7 @@ import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 import { DataStorageStack } from './data-storage-stack';
 import { VPCStack } from './vpc-stack';
+import { CfnWebACL, CfnWebACLAssociation } from 'aws-cdk-lib/aws-wafv2';
 
 
 export class LambdaStack extends Stack {
@@ -101,5 +102,66 @@ export class LambdaStack extends Stack {
       authorizationType: AuthorizationType.NONE
     });
 
+
+
+    // Store the gateway ARN for use with our WAF stack 
+    const apiGatewayARN = `arn:aws:apigateway:${Stack.of(this).region}::/restapis/${gateway.restApiId}/stages/${gateway.deploymentStage.stageName}`
+
+
+    // Waf Firewall
+    const webAcl = new CfnWebACL(this, 'waf', {
+      description: 'waf for Parkinson API Gateway',
+      scope: 'REGIONAL',
+      defaultAction: { allow: {} },
+      visibilityConfig: { 
+        sampledRequestsEnabled: true, 
+        cloudWatchMetricsEnabled: true,
+        metricName: 'knowledgeGraph-firewall'
+      },
+      rules: [
+        {
+          name: 'AWS-AWSManagedRulesCommonRuleSet',
+          priority: 1,
+          statement: {
+            managedRuleGroupStatement: {
+              vendorName: 'AWS',
+              name: 'AWSManagedRulesCommonRuleSet',
+            }
+          },
+          overrideAction: { none: {}},
+          visibilityConfig: {
+            sampledRequestsEnabled: true,
+            cloudWatchMetricsEnabled: true,
+            metricName: 'AWS-AWSManagedRulesCommonRuleSet'
+          }
+        },
+        {
+          name: 'LimitRequests1000',
+          priority: 2,
+          action: {
+            block: {}
+          },
+          statement: {
+            rateBasedStatement: {
+              limit: 1000,
+              aggregateKeyType: "IP"
+            }
+          },
+          visibilityConfig: {
+            sampledRequestsEnabled: true,
+            cloudWatchMetricsEnabled: true,
+            metricName: 'LimitRequests1000'
+          }
+        },
+    ]
+    })
+
+    // Associate the WAF with the API endpoint
+    new CfnWebACLAssociation(this, `WebAclAssociation`, {
+      resourceArn: apiGatewayARN,
+      webAclArn: webAcl.attrArn
+  });
   }
+
 }
+
