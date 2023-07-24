@@ -20,7 +20,7 @@ Before you start deploying, you must have the following dependencies:
 
 If you do not currently have a configured AWS Account, configure an account with the following instructions:
 
-- Configure the AWS CLI tool for your AWS Account in the `ca-central-1` region, using a user with programmatic access and the "AdministratorAccess" policy (moving forward, we will assume you have [configured a profile](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/configure/index.html) called `parkinsons-project`):
+- Configure the AWS CLI tool for your AWS Account in the `ca-central-1` region, using an IAM user with programmatic access and the "AdministratorAccess" policy (moving forward, we will assume you have [configured a profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) called `parkinsons-project`) by running the following commmand :
   > `aws configure --profile parkinsons-project`
 
 If you already have a configured AWS account, you may use your own configured account to deploy. Please note that if you decide to use your own account to deploy, be sure to change our command line commands to use your profile whenever there is a ```--profile``` command.
