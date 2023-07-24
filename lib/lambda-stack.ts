@@ -116,7 +116,7 @@ export class LambdaStack extends Stack {
       visibilityConfig: { 
         sampledRequestsEnabled: true, 
         cloudWatchMetricsEnabled: true,
-        metricName: 'knowledgeGraph-firewall'
+        metricName: 'parkinsons-survey-firewall'
       },
       rules: [
         {
