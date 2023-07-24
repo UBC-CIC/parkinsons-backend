@@ -3,11 +3,11 @@
 Cloud storage solution to store study results collected in the [Parkinson's Survey App](https://github.com/UBC-CIC/parkinsons-survey-app).
 | Index                                               | Description                                             |
 | :-------------------------------------------------- | :------------------------------------------------------ |
-| [High Level Architecture](#High-Level-Architecture) | High level overview illustrating component interactions |
-| [Deployment](#Deployment-Guide)                     | How to deploy the project                               |
-| [Changelog](#Changelog)                             | Any changes post publish                                |
-| [Credits](#Credits)                                 | Meet the team behind the solution                       |
-| [License](#License)                                 | License details                                         |
+| [High Level Architecture](#high-level-architecture) | High level overview illustrating component interactions |
+| [Deployment](#deployment-guide)                     | How to deploy the project                               |
+| [Changelog](#changelog)                             | Any changes post publish                                |
+| [Credits](#credits)                                 | Meet the team behind the solution                       |
+| [License](#license)                                 | License details                                         |
 
 # High Level Architecture
 
