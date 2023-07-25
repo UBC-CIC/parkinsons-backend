@@ -11,7 +11,7 @@
 
 ### **Data Input Flow of the Mobile App (1-6)**
 
-1. When an administrator ends a study on the app, the app will attempt to send a POST request to an API Gateway with an API key for authentication to retrieve a pre-signed URL to upload to the raw data S3 Bucket. If the device is not connected to the internet or the uploading fails, the locally stored data will be retained on the device.
+1. When an administrator ends a study on the app, the app will attempt to send a POST request to an API Gateway with an API key for authentication to retrieve a pre-signed URL to upload to the raw data S3 Bucket. The POST request passes through an AWS Web Application Firewall which implements the AWS Core rule set rule group and a rate-based rule limiting requests the number of requests that can be recieved in a fixed period of time. If the device is not connected to the internet or the uploading fails, the locally stored data will be retained on the device.
 2. The API Gateway calls a lambda function which retrieves the pre-signed URL. For authentication, the Lambda function retrieves the stored API key from AWS Secrets manager to ensure the API key sent in the POST request matches the stored API key.
 3. This pre-signed URL is then returned back to the mobile app through the API Gateway.
 4. The mobile app then compiles a JSON file containing all the data collected in the study and submits the JSON file in a PUT request to the pre-signed URL.
