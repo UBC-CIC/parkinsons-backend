@@ -2,7 +2,7 @@ import { Aws, Duration, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { BlockPublicAccess, Bucket, BucketEncryption, HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { AccountRootPrincipal, Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
-import { VPCStack } from './vpc-stack';
+import { ParkinsonsSurveyVPCStack } from './vpc-stack';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { EventType } from 'aws-cdk-lib/aws-s3';
 import * as s3n from "aws-cdk-lib/aws-s3-notifications";
@@ -10,7 +10,7 @@ import { AssetCode, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 
-export class DataStorageStack extends Stack {
+export class ParkinsonsSurveyDataStorageStack extends Stack {
 
   public readonly logBucket: Bucket;
   public readonly rawDataBucket: Bucket;
@@ -23,7 +23,7 @@ export class DataStorageStack extends Stack {
   public readonly jsonProcessingFunction: Function;
   public readonly processingLambdaRole: Role;
 
-  constructor(scope: Construct, id: string, vpcStack: VPCStack, props?: StackProps) {
+  constructor(scope: Construct, id: string, vpcStack: ParkinsonsSurveyVPCStack, props?: StackProps) {
     super(scope, id, props);
 
     this.rawBucketName = 'parkinsons-raw-data-bucket-' + Aws.ACCOUNT_ID;

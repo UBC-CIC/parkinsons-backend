@@ -4,16 +4,16 @@ import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 
 import { AssetCode, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
-import { DataStorageStack } from './data-storage-stack';
-import { VPCStack } from './vpc-stack';
+import { ParkinsonsSurveyDataStorageStack } from './data-storage-stack';
+import { ParkinsonsSurveyVPCStack } from './vpc-stack';
 import { CfnWebACL, CfnWebACLAssociation } from 'aws-cdk-lib/aws-wafv2';
 
 
-export class LambdaStack extends Stack {
+export class ParkinsonsSurveyLambdaStack extends Stack {
   public readonly presignedURLFunction: Function;
   public readonly presignedURLLambdaRole: Role;
 
-  constructor(scope: Construct, id: string, vpcStack: VPCStack, dataStorage: DataStorageStack, props?: StackProps) {
+  constructor(scope: Construct, id: string, vpcStack: ParkinsonsSurveyVPCStack, dataStorage: ParkinsonsSurveyDataStorageStack, props?: StackProps) {
     super(scope, id, props);
     this.presignedURLLambdaRole = new Role(this, 'PresignedURLLambdaRole', {
       roleName: 'PresignedURLLambdaRole',

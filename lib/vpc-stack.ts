@@ -4,7 +4,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2'
 import { SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 
 
-export class VPCStack extends Stack {
+export class ParkinsonsSurveyVPCStack extends Stack {
     public readonly vpc: ec2.Vpc;
     public readonly cidrStr: string;
     public readonly lambdaSecurityGroup: SecurityGroup;
