@@ -59,7 +59,8 @@ export class ParkinsonsSurveyLambdaStack extends Stack {
     });
 
     this.presignedURLFunction = new Function(this, 'presignedURLFunction', {
-      functionName: "GetURL",
+      functionName: "ParkinsonsSurveyLambdaStack-GetURL",
+      description: "Generates pre-signed URL to give mobile app access to S3.",
       code: new AssetCode('build/src'),
       handler: 'get-presigned-url.handler',
       runtime: Runtime.NODEJS_18_X,

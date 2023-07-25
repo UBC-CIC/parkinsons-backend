@@ -149,7 +149,8 @@ export class ParkinsonsSurveyDataStorageStack extends Stack {
     });
 
     this.jsonProcessingFunction = new Function(this, 'jsonProcessingFunction', {
-      functionName: "ProcessJson",
+      functionName: "ParkinsonsSurveyDataStorageStack-ProcessJson",
+      description: "Retrieve JSON file uploaded to raw data S3 bucket and separate into smaller JSON and CSV files.",
       code: new AssetCode('build/src'),
       handler: 'process-json.handler',
       runtime: Runtime.NODEJS_18_X,
