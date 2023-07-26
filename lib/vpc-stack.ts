@@ -15,7 +15,7 @@ export class ParkinsonsSurveyVPCStack extends Stack {
 
     const vpcName = "parkinsons-VPC";
 
-    this.cidrStr = '12.0.0.0/16';
+    this.cidrStr = '10.0.0.0/16';
 
 
     this.vpc = new ec2.Vpc(this, vpcName, {
